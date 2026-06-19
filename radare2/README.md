@@ -20,3 +20,15 @@ Inside `r2`, configure the provider and model before use. The default provider i
     r2ai -m gpt-4
 
 Use `r2ai -h` and `decai -h` to see available commands. Use `r2ai -p?` to list providers and `r2ai -e` to view all settings.
+
+## r2ghidra
+
+The image also bundles [r2ghidra](https://github.com/radareorg/r2ghidra), which integrates the Ghidra decompiler into Radare2 without requiring Java or a Ghidra installation. Unlike r2ai, it needs no API key or network access, and it ships its own processor (Sleigh) definitions.
+
+Decompile a function inside `r2` with the `pdg` command after analyzing the binary:
+
+    aa
+    s main
+    pdg
+
+Use `pdg?` to list the available subcommands. This plugin is amd64 only.

@@ -1,10 +1,10 @@
 # Name: radare2
 # Website: https://www.radare.org/n/radare2.html
-# Description: Examine binary files, including disassembling and debugging.
+# Description: Examine binary files, including disassembling and debugging. Includes r2ai and decai plugins for LLM-powered analysis (API key or local Ollama required), plus the r2ghidra plugin for Ghidra decompilation via the pdg command.
 # Category: Dynamically Reverse-Engineer Code: General
 # Author: https://github.com/radareorg/radare2/blob/master/AUTHORS.md
 # License: GNU Lesser General Public License (LGPL) v3: https://github.com/radareorg/radare2/blob/master/COPYING
-# Notes: r2, rasm2, rabin2, rahash2, rafind2, r2agent, r2ai, decai
+# Notes: r2, rasm2, rabin2, rahash2, rafind2, r2agent, r2ai, decai, pdg
 #
 # To run this image after installing Docker, use the command below, replacing
 # "~/workdir" with the path to your working directory on the underlying host.
@@ -20,13 +20,13 @@
 
 FROM ubuntu:24.04
 LABEL maintainer="Lenny Zeltser (@lennyzeltser, www.zeltser.com)"
-LABEL updated="10 Feb 2026"
+LABEL updated="19 Jun 2026"
 LABEL updated_by="lennyzeltser"
 
 ENV LANG=C.UTF-8
 ENV LANGUAGE=C.UTF-8
 ENV LC_ALL=C.UTF-8
-ARG R2VER=6.0.8
+ARG R2VER=6.1.6
 
 USER root
 RUN apt-get update && \
@@ -37,12 +37,16 @@ RUN apt-get update && \
     git && \
     rm -rf /var/lib/apt/lists/*
 
+# Install radare2 plus the r2ghidra plugin (Ghidra decompiler, provides the pdg command)
 RUN wget -q -O /tmp/radare2_${R2VER}_amd64.deb \
     https://github.com/radareorg/radare2/releases/download/${R2VER}/radare2_${R2VER}_amd64.deb && \
+    wget -q -O /tmp/r2ghidra_${R2VER}_amd64.deb \
+    https://github.com/radareorg/r2ghidra/releases/download/${R2VER}/r2ghidra_${R2VER}_amd64.deb && \
     apt-get update && \
     apt-get install -y /tmp/radare2_${R2VER}_amd64.deb && \
+    apt-get install -y /tmp/r2ghidra_${R2VER}_amd64.deb && \
     (apt-get remove --purge -y libradare2-common 2>/dev/null || true) && \
-    rm -f /tmp/radare2_${R2VER}_amd64.deb && \
+    rm -f /tmp/radare2_${R2VER}_amd64.deb /tmp/r2ghidra_${R2VER}_amd64.deb && \
     rm -rf /var/lib/apt/lists/*
 
 RUN groupadd -r nonroot && \
