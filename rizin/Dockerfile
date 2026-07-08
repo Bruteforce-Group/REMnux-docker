@@ -16,13 +16,13 @@
 
 FROM ubuntu:24.04
 LABEL maintainer="Lenny Zeltser (@lennyzeltser, www.zeltser.com)"
-LABEL updated="9 Feb 2026"
+LABEL updated="8 Jul 2026"
 LABEL updated_by="lennyzeltser"
 
 ENV LANG=C.UTF-8
 ENV LANGUAGE=C.UTF-8
 ENV LC_ALL=C.UTF-8
-ARG RZVER=v0.8.2
+ARG RZVER=v0.9.1
 
 USER root
 
